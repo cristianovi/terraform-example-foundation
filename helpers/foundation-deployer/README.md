@@ -10,6 +10,7 @@ Helper tool to deploy the Terraform example foundation using Cloud Build and Clo
 - [Google Cloud SDK](https://cloud.google.com/sdk/install) version 393.0.0 or later
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) version 2.28.0 or later
 - [Terraform](https://www.terraform.io/downloads.html) version 1.5.7 or later
+- The user deploying the foundation requires the **Service Account Token Creator** (roles/iam.serviceAccountTokenCreator) role.
 - See `0-bootstrap` README for additional IAM [requirements](../../0-bootstrap/README.md#prerequisites) on the user deploying the Foundation.
 - To enable Security Command Center, choose a Security Command Center tier and create and grant permissions for the Security Command Center service account as described in [Setting up Security Command Center](https://cloud.google.com/security-command-center/docs/quickstart-security-command-center).
 
