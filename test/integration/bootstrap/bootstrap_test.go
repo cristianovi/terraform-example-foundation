@@ -194,7 +194,6 @@ func TestBootstrap(t *testing.T) {
 				prj := gcloud.Runf(t, "projects describe %s", cbProjectID)
 				assert.True(prj.Exists(), "project %s should exist", cbProjectID)
 
-<<<<<<< HEAD
 				// Private Pools
 				workerPoolName := testutils.GetLastSplitElement(bootstrap.GetStringOutput("cloud_build_private_worker_pool_id"), "/")
 				peeredNetworkName := testutils.GetLastSplitElement(bootstrap.GetStringOutput("cloud_build_peered_network_id"), "/")
@@ -204,17 +203,6 @@ func TestBootstrap(t *testing.T) {
 				assert.Equal("e2-medium", pool.Get("privatePoolV1Config.workerConfig.machineType").String(), "pool %s should have the configured machineType", workerPoolName)
 				assert.Equal("100", pool.Get("privatePoolV1Config.workerConfig.diskSizeGb").String(), "pool %s should have the configured disk size", workerPoolName)
 				assert.Equal(peeredNetworkName, testutils.GetLastSplitElement(pool.Get("privatePoolV1Config.networkConfig.peeredNetwork").String(), "/"), "pool %s should have peered network configured", workerPoolName)
-=======
-			// Private Pools
-			workerPoolName := testutils.GetLastSplitElement(bootstrap.GetStringOutput("cloud_build_private_worker_pool_id"), "/")
-			peeredNetworkName := testutils.GetLastSplitElement(bootstrap.GetStringOutput("cloud_build_peered_network_id"), "/")
-			pool := gcloud.Runf(t, "builds worker-pools describe %s --region %s --project %s", workerPoolName, defaultRegion, cbProjectID)
-			assert.Equal(workerPoolName, pool.Get("name").String(), "pool %s should exist", workerPoolName)
-			assert.Equal("NO_PUBLIC_EGRESS", pool.Get("privatePoolV1Config.networkConfig.egressOption").String(), "pool %s should have internet access", workerPoolName)
-			assert.Equal("e2-medium", pool.Get("privatePoolV1Config.workerConfig.machineType").String(), "pool %s should have the configured machineType", workerPoolName)
-			assert.Equal("100", pool.Get("privatePoolV1Config.workerConfig.diskSizeGb").String(), "pool %s should have the configured disk size", workerPoolName)
-			assert.Equal(peeredNetworkName, testutils.GetLastSplitElement(pool.Get("privatePoolV1Config.networkConfig.peeredNetwork").String(), "/"), "pool %s should have peered network configured", workerPoolName)
->>>>>>> dudas-fork/refactor/one-default-common-perimeter
 
 				globalAddressName := "ga-b-cbpools-worker-pool-range"
 				globalAddress := gcloud.Runf(t, "compute addresses describe %s --global --project %s", globalAddressName, cbProjectID)
