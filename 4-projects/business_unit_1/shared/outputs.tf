@@ -26,7 +26,7 @@ output "cloudbuild_project_id" {
 
 output "cloudbuild_project_number" {
   description = "APP Infra cloudbuild project number."
-  value       = module.app_infra_cloudbuild_project[0].project_number
+  value       = try(module.app_infra_cloudbuild_project[0].project_number, "")
 }
 
 output "terraform_service_accounts" {
