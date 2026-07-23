@@ -26,8 +26,8 @@ resource "random_id" "random_access_level_suffix" {
 }
 
 module "access_level" {
-  source  = "terraform-google-modules/vpc-service-controls/google//modules/access_level"
-  version = "~> 8.0"
+  # Fork with create_before_destroy: https://github.com/mariammartins/terraform-google-vpc-service-controls/commit/c6ba03e48c1b09ef011d4b36af0f6b1636cfedbe
+  source = "git::https://github.com/mariammartins/terraform-google-vpc-service-controls.git//modules/access_level?ref=c6ba03e48c1b09ef011d4b36af0f6b1636cfedbe"
 
   description = "${local.prefix} Access Level for use in an enforced perimeter"
   policy      = var.access_context_manager_policy_id
@@ -38,8 +38,7 @@ module "access_level" {
 module "access_level_dry_run" {
   count = !var.enforce_vpcsc ? 1 : 0
 
-  source  = "terraform-google-modules/vpc-service-controls/google//modules/access_level"
-  version = "~> 8.0"
+  source = "git::https://github.com/mariammartins/terraform-google-vpc-service-controls.git//modules/access_level?ref=c6ba03e48c1b09ef011d4b36af0f6b1636cfedbe"
 
   description = "${local.prefix} Access Level for testing with a dry run perimeter"
   policy      = var.access_context_manager_policy_id
@@ -48,8 +47,7 @@ module "access_level_dry_run" {
 }
 
 module "regular_service_perimeter" {
-  source  = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
-  version = "~> 8.0"
+  source = "git::https://github.com/mariammartins/terraform-google-vpc-service-controls.git//modules/regular_service_perimeter?ref=c6ba03e48c1b09ef011d4b36af0f6b1636cfedbe"
 
   policy         = var.access_context_manager_policy_id
   perimeter_name = local.perimeter_name
@@ -61,10 +59,8 @@ module "regular_service_perimeter" {
   access_levels           = var.enforce_vpcsc ? [module.access_level.name] : []
   restricted_services     = var.enforce_vpcsc ? var.restricted_services : []
   vpc_accessible_services = var.enforce_vpcsc ? ["*"] : []
-  ingress_policies        = var.enforce_vpcsc ? var.ingress_policies : []
-  ingress_policies_keys   = var.enforce_vpcsc ? var.ingress_policies_keys : []
-  egress_policies         = var.enforce_vpcsc ? var.egress_policies : []
-  egress_policies_keys    = var.enforce_vpcsc ? var.egress_policies_keys : []
+  ingress_policies_map    = var.enforce_vpcsc ? var.ingress_policies_map : {}
+  egress_policies_map     = var.enforce_vpcsc ? var.egress_policies_map : {}
 
   # configurations for a perimeter in dry run mode.
   resources_dry_run               = !var.enforce_vpcsc ? var.resources_dry_run : []
@@ -72,10 +68,8 @@ module "regular_service_perimeter" {
   access_levels_dry_run           = !var.enforce_vpcsc && length(module.access_level_dry_run) > 0 ? [module.access_level_dry_run[0].name] : []
   restricted_services_dry_run     = !var.enforce_vpcsc ? var.restricted_services_dry_run : []
   vpc_accessible_services_dry_run = !var.enforce_vpcsc ? ["*"] : []
-  ingress_policies_dry_run        = !var.enforce_vpcsc ? var.ingress_policies_dry_run : []
-  ingress_policies_keys_dry_run   = !var.enforce_vpcsc ? var.ingress_policies_keys_dry_run : []
-  egress_policies_dry_run         = !var.enforce_vpcsc ? var.egress_policies_dry_run : []
-  egress_policies_keys_dry_run    = !var.enforce_vpcsc ? var.egress_policies_keys_dry_run : []
+  ingress_policies_dry_run_map    = !var.enforce_vpcsc ? var.ingress_policies_dry_run_map : {}
+  egress_policies_dry_run_map     = !var.enforce_vpcsc ? var.egress_policies_dry_run_map : {}
 }
 
 resource "time_sleep" "wait_vpc_sc_propagation" {
