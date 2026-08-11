@@ -99,10 +99,18 @@ func NewGCP() GCP {
 func (g GCP) IsComponentInstalled(t testing.TB, componentID string) bool {
 	filter := fmt.Sprintf("\"id='%s'\"", componentID)
 	components := g.Runf(t, "components list --filter %s", filter).Array()
-	if len(components) == 0 {
-		return false
+	if len(components) > 0 {
+		return components[0].Get("state.name").String() != "Not Installed"
 	}
-	return components[0].Get("state.name").String() != "Not Installed"
+	if componentID == "terraform-tools" {
+		return g.isTerraformToolsAvailable(t)
+	}
+	return false
+}
+
+func (g GCP) isTerraformToolsAvailable(t testing.TB) bool {
+	_, err := gcloud.RunCmdE(t, "beta terraform vet --help")
+	return err == nil
 }
 
 // GetBuilds gets all Cloud Build builds form a project and region that satisfy the given filter.
