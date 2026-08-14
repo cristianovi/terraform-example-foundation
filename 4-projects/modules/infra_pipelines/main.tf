@@ -118,14 +118,14 @@ resource "google_storage_bucket_iam_member" "tf_state" {
   member = "serviceAccount:${local.workspace_sa_email[each.key]}"
 }
 
-// Required by gcloud beta terraform vet
-resource "google_organization_iam_member" "browser" {
-  for_each = toset(var.app_infra_repos)
-
-  org_id = var.org_id
-  role   = "roles/browser"
-  member = "serviceAccount:${local.workspace_sa_email[each.key]}"
-}
+# Disabled: terraform-tools / gcloud beta terraform vet is no longer used
+# resource "google_organization_iam_member" "browser" {
+#   for_each = toset(var.app_infra_repos)
+#
+#   org_id = var.org_id
+#   role   = "roles/browser"
+#   member = "serviceAccount:${local.workspace_sa_email[each.key]}"
+# }
 
 resource "google_sourcerepo_repository_iam_member" "member" {
   for_each = toset(var.app_infra_repos)

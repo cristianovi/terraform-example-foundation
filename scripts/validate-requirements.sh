@@ -20,6 +20,7 @@
 # -------------------------- Variables --------------------------
 # Expected versions of the installers
 TF_VERSION="1.5.7"
+# terraform-tools / gcloud beta terraform vet is disabled
 # Version 393.0.0 due to terraform-tools 0.5.0 version that fixes the issue
 # mentioned in this PR https://github.com/terraform-google-modules/terraform-example-foundation/pull/729#discussion_r919427668
 GCLOUD_SDK_VERSION="393.0.0"

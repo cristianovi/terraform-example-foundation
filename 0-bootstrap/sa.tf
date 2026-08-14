@@ -28,7 +28,7 @@ locals {
   }
 
   common_roles = [
-    "roles/browser", // Required for gcloud beta terraform vet to be able to read the ancestry of folders
+    # "roles/browser", // Disabled: required for gcloud beta terraform vet to be able to read the ancestry of folders
   ]
 
   granular_sa_org_level_roles = {
