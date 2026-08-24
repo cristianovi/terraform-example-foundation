@@ -33,8 +33,6 @@ import (
 
 // TerraformVet runs gcloud terraform vet on the plan of the provided terraform directory
 func TerraformVet(t testing.TB, terraformDir, policyPath, project string, envVars map[string]string) error {
-	// Disabled: terraform-tools / gcloud beta terraform vet is no longer used
-	return nil
 
 	fmt.Println("")
 	fmt.Println("# Running gcloud terraform vet")
