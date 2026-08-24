@@ -53,7 +53,8 @@ leaf_regex_plan="^(development|nonproduction|production|shared)$"
 
 #====================================================================#
 # Function used for the criteria for running terraform int/plan/show
-# and gcloud beta terraform vet for all the Terraform configurations.
+# for all the Terraform configurations.
+# Disabled: terraform-tools / gcloud beta terraform vet is no longer used
 #====================================================================#
 do_plan() {
   local leaf
@@ -275,7 +276,8 @@ tf_validate() {
           popd
         fi
       fi
-      gcloud beta terraform vet "${tf_file}.json" --policy-library="${policy_file_path}" --project="${project_id}" || exit 33
+      # Disabled: terraform-tools / gcloud beta terraform vet is no longer used
+      # gcloud beta terraform vet "${tf_file}.json" --policy-library="${policy_file_path}" --project="${project_id}" || exit 33
       cd "$base_dir" || exit
     else
       echo "ERROR: ${path} does not exist"
